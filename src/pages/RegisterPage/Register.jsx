@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
@@ -26,10 +26,6 @@ const LoginPage = () => {
         console.log(error);
       });
   };
-
-  // const handleGoogleRegister = (data) => {
-  //   createUserWithGoogle(data.email, data.password);
-  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-linear-to-br from-gray-900 via-orange-950 to-amber-900">
