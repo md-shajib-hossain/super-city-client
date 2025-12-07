@@ -63,6 +63,9 @@ const LoginPage = () => {
                 className="w-full px-4 py-3.5 bg-white/20 border border-white/30 rounded-xl text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
               />
               {errors.password?.type === "required" && (
+                <p className="text-red-500">Password is Required</p>
+              )}
+              {errors.password?.type === "minLength" && (
                 <p className="text-red-500">
                   Password must be 6 or more characters
                 </p>
