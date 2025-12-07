@@ -61,7 +61,7 @@ const Navbar = () => {
           <div className=" border-gray-200">
             <div className="flex items-center space-x-3 px-2 py-3">
               <img
-                src=""
+                src="d"
                 alt="Profile"
                 className="w-10 h-10 rounded-full ring-1 ring-orange-500"
               />

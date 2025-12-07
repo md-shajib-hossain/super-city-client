@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import useAuth from "../../MyHooks/useAuth";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [remember, setRemember] = useState(false);
+  const { createUserWithGoogle, createUserWithEP } = useAuth();
   const {
     register,
     handleSubmit,
@@ -13,8 +16,20 @@ const LoginPage = () => {
   } = useForm();
 
   const handleRegistration = (data) => {
-    console.log("Login:", data.email, data.password);
+    const { email, password } = data;
+    createUserWithEP(email, password)
+      .then((result) => {
+        console.log(result);
+        toast("user reg done");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // const handleGoogleRegister = (data) => {
+  //   createUserWithGoogle(data.email, data.password);
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-linear-to-br from-gray-900 via-orange-950 to-amber-900">
@@ -105,15 +120,13 @@ const LoginPage = () => {
                 <div className="w-full border-t border-white/20"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-transparent text-orange-200">
-                  Or continue with
-                </span>
+                <span className="px-4 bg-transparent text-orange-200">Or</span>
               </div>
             </div>
 
             {/* Google Button – Orange Theme Friendly */}
             <button
-              onClick={() => console.log("Google Login")}
+              // onClick={handleGoogleRegister}
               className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 bg-white/15 backdrop-blur-md border border-white/30 rounded-xl text-white font-medium hover:bg-white/25 hover:border-orange-400 transform hover:scale-[1.02] transition-all duration-300"
             >
               <FcGoogle size={26} />
@@ -122,12 +135,12 @@ const LoginPage = () => {
           </div>
 
           <p className="mt-8 text-center text-orange-200">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/register"
+              to="/login"
               className="font-bold text-white hover:text-orange-300 transition"
             >
-              Sign up free
+              Login
             </Link>
           </p>
         </div>
