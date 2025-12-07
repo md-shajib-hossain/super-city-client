@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { loginWithEP } = useAuth();
+  const { loginWithEP, createUserWithGoogle } = useAuth();
   const {
     register,
     handleSubmit,
@@ -25,6 +25,17 @@ const LoginPage = () => {
       .catch((error) => {
         console.log(error);
         toast.error(error.message);
+      });
+  };
+  const handleGoogleSignIn = () => {
+    createUserWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        toast.success("User signed in by google");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 
@@ -103,7 +114,10 @@ const LoginPage = () => {
             </div>
 
             {/* Google Button – Orange Theme Friendly */}
-            <button className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 bg-white/15 backdrop-blur-md border border-white/30 rounded-xl text-white font-medium hover:bg-white/25 hover:border-orange-400 transform hover:scale-[1.02] transition-all duration-300">
+            <button
+              onClick={handleGoogleSignIn}
+              className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 bg-white/15 backdrop-blur-md border border-white/30 rounded-xl text-white font-medium hover:bg-white/25 hover:border-orange-400 transform hover:scale-[1.02] transition-all duration-300"
+            >
               <FcGoogle size={26} />
               <span>Continue with Google</span>
             </button>

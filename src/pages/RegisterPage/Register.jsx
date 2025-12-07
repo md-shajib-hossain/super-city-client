@@ -4,10 +4,11 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const LoginPage = () => {
   const [remember, setRemember] = useState(false);
-  const { createUserWithGoogle, createUserWithEP } = useAuth();
+  const { createUserWithGoogle, createUserWithEP, updateUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -17,13 +18,49 @@ const LoginPage = () => {
 
   const handleRegistration = (data) => {
     const { email, password } = data;
+    const profileImg = data.photo[0];
+    // console.log(data, "photo ", profileImg);
     createUserWithEP(email, password)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
+        // create form data for image upload
+        const formData = new FormData();
+        formData.append("image", profileImg);
+
+        // image url after upload
+        const imageApiUrl = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_imgbb_api
+        }`;
+
+        axios.post(imageApiUrl, formData).then((res) => {
+          const updateProfile = {
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+          // console.log(res.data.data.url);
+          // update profile func call here
+          updateUser(updateProfile)
+            .then()
+            .catch((error) => {
+              toast(error.message);
+            });
+          console.log("after upload----------------", res.data);
+        });
+
         toast("user reg done");
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    createUserWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        toast.success("User signed in by google");
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 
@@ -48,6 +85,22 @@ const LoginPage = () => {
             onSubmit={handleSubmit(handleRegistration)}
             className="space-y-6"
           >
+            {/* name field */}
+            <div>
+              <label className="block text-sm font-medium text-orange-100 mb-2">
+                Your Name
+              </label>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                placeholder="Your Name"
+                className="w-full px-4 py-3.5 bg-white/20 border border-white/30 rounded-xl text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
+              />
+              {errors.name?.type === "required" && (
+                <p className="text-red-500">Name is Required</p>
+              )}
+            </div>
+            {/* email field */}
             <div>
               <label className="block text-sm font-medium text-orange-100 mb-2">
                 Email Address
@@ -62,7 +115,22 @@ const LoginPage = () => {
                 <p className="text-red-500">Email is Required</p>
               )}
             </div>
+            {/* Imaage upload field */}
+            <div>
+              <label className="block text-sm font-medium text-orange-100 mb-2">
+                Your Photo
+              </label>
+              <input
+                type="file"
+                {...register("photo", { required: true })}
+                className="file-input file-input-warning file-input-lg w-full px-4 bg-white/20 border border-white/30 rounded-xl text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
+              />
+              {errors.file?.type === "required" && (
+                <p className="text-red-500">Photo is Required</p>
+              )}
+            </div>
 
+            {/* password field */}
             <div>
               <label className="block text-sm font-medium text-orange-100 mb-2">
                 Password
@@ -122,7 +190,7 @@ const LoginPage = () => {
 
             {/* Google Button – Orange Theme Friendly */}
             <button
-              // onClick={handleGoogleRegister}
+              onClick={handleGoogleSignIn}
               className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 bg-white/15 backdrop-blur-md border border-white/30 rounded-xl text-white font-medium hover:bg-white/25 hover:border-orange-400 transform hover:scale-[1.02] transition-all duration-300"
             >
               <FcGoogle size={26} />

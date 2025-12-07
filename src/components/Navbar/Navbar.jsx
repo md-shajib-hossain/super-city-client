@@ -1,10 +1,14 @@
 import React from "react";
 import Logo from "../Logo";
-import { NavLink } from "react-router-dom";
-import PrimaryButton from "../SHared/Buttons/PrimaryButton";
-import { AmpersandsIcon } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { GrLogout } from "react-icons/gr";
+import useAuth from "../../MyHooks/useAuth";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { user, logOut } = useAuth();
+  // console.log(user);
   const links = (
     <>
       <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
@@ -21,6 +25,14 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  const handleLogOut = () => {
+    logOut().then((result) => {
+      // console.log(result);
+      navigate("/");
+      toast("Logged Out Successfull");
+    });
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -58,15 +70,45 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <>
-          <div className=" border-gray-200">
-            <div className="flex items-center space-x-3 px-2 py-3">
-              <img
-                src="d"
-                alt="Profile"
-                className="w-10 h-10 rounded-full ring-1 ring-orange-500"
-              />
+          <div className="dropdown dropdown-bottom dropdown-end">
+            <div tabIndex={0} className="m-1 cursor-pointer">
+              <div className="flex items-center space-x-3 px-2 py-3">
+                <img
+                  src={user?.photoURL}
+                  alt="Profile"
+                  className="w-12 h-12 rounded-full ring-1 ring-orange-500"
+                />
+              </div>
             </div>
+            <ul
+              tabIndex="-1"
+              className="dropdown-content menu bg-orange-100 rounded-box text-lg z-1 w-52 p-2 shadow-sm"
+            >
+              {user ? (
+                <>
+                  <li>
+                    <Link>{user.displayName}</Link>
+                  </li>
+                  <li>
+                    <Link>Dashboard</Link>
+                  </li>
+                  <li>
+                    <Link>My Profile</Link>
+                  </li>
+                  <li className="text-primary" onClick={handleLogOut}>
+                    <Link>
+                      Log Out <GrLogout></GrLogout>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link to="/login">Log In</Link>
+                </li>
+              )}
+            </ul>
           </div>
+          <div className=" border-gray-200"></div>
         </>
 
         {/* <PrimaryButton label={"Purchase"} disabled={!true}></PrimaryButton> */}
