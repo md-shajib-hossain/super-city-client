@@ -1,0 +1,35 @@
+/* font for logo */
+
+@import url("https://fonts.googleapis.com/css2?family=Plaster&family=Revalia&display=swap");
+/* mulish font */
+@import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
+.mulish {
+  font-family: "Mulish", sans-serif;
+  font-optical-sizing: auto;
+}
+body {
+  font-family: "Mulish", sans-serif;
+  font-optical-sizing: auto;
+}
+.revalia-regular {
+  font-family: "Revalia", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: oklch(70.5% 0.213 47.604);
+  --color-secondary: oklch(82.8% 0.111 230.318);
+}
+
+a.active {
+  @apply bg-orange-500 
+  text-white rounded-none;
+}
