@@ -1,0 +1,439 @@
+[
+  {
+    "no": 1,
+    "title": "Large pothole on main road – vehicles getting stuck",
+    "details": "A huge pothole appeared after heavy rain. Many cars and bikes are getting damaged every day. Urgent repair needed.",
+    "category": "Road Damage",
+    "status": "pending",
+    "priority": "high",
+    "location": {
+      "address": "Mirpur 10 Roundabout, Dhaka",
+      "lat": 23.8063,
+      "lng": 90.3687
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800",
+      "https://images.unsplash.com/photo-1621905252507-bacb8c7bb1f4?w=800"
+    ],
+    "createdBy": {
+      "name": "Abdul Karim",
+      "avatar": "https://ui-avatars.com/api/?name=Abdul+Karim&background=ea580c&color=fff"
+    },
+    "likes": 48,
+    "createdAt": "2025-12-01T08:15:00Z"
+  },
+  {
+    "no": 2,
+    "title": "Street lights not working for 4 days",
+    "details": "Entire lane is completely dark at night. Safety concern for residents.",
+    "category": "Street Light",
+    "status": "in-progress",
+    "priority": "high",
+    "location": {
+      "address": "Uttara Sector 13, Road 15",
+      "lat": 23.8735,
+      "lng": 90.3994
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1485081669829-bacb8c7bb1f3?w=800"
+    ],
+    "createdBy": {
+      "name": "Fatima Rahman",
+      "avatar": "https://ui-avatars.com/api/?name=Fatima+Rahman&background=f97316&color=fff"
+    },
+    "likes": 34,
+    "createdAt": "2025-12-06T19:30:00Z"
+  },
+  {
+    "no": 3,
+    "title": "Blocked drainage causing water logging",
+    "details": "Water has been stagnant for a week after rain. Mosquito breeding and bad smell.",
+    "category": "Drainage",
+    "status": "pending",
+    "priority": "medium",
+    "location": {
+      "address": "Mohammadpur Bus Stand",
+      "lat": 23.7541,
+      "lng": 90.3612
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1587502536900-baf0c55a3f74?w=800"
+    ],
+    "createdBy": {
+      "name": "Rahim Khan",
+      "avatar": "https://ui-avatars.com/api/?name=Rahim+Khan&background=dc2626&color=fff"
+    },
+    "likes": 29,
+    "createdAt": "2025-12-04T12:00:00Z"
+  },
+  {
+    "no": 4,
+    "title": "Illegal parking blocking sidewalk",
+    "details": "Rickshaws and cars parked on footpath forcing pedestrians onto the road.",
+    "category": "Encroachment",
+    "status": "resolved",
+    "priority": "medium",
+    "location": { "address": "Banani Road 11", "lat": 23.7948, "lng": 90.4066 },
+    "photos": [
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800"
+    ],
+    "createdBy": {
+      "name": "Ayesha Siddika",
+      "avatar": "https://ui-avatars.com/api/?name=Ayesha+Siddika&background=7c3aed&color=fff"
+    },
+    "likes": 72,
+    "createdAt": "2025-11-20T10:45:00Z"
+  },
+  {
+    "no": 5,
+    "title": "Garbage pile not collected for 10 days",
+    "details": "Overflowing bins attracting stray dogs and spreading foul smell.",
+    "category": "Waste Management",
+    "status": "in-progress",
+    "priority": "high",
+    "location": {
+      "address": "Bashundhara R/A, Block D",
+      "lat": 23.8121,
+      "lng": 90.4235
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1577703046064-82e7e7be0f97?w=800"
+    ],
+    "createdBy": {
+      "name": "Imran Hossain",
+      "avatar": "https://ui-avatars.com/api/?name=Imran+Hossain&background=0891b2&color=fff"
+    },
+    "likes": 55,
+    "createdAt": "2025-12-03T07:10:00Z"
+  },
+  {
+    "no": 6,
+    "title": "Broken manhole cover – safety hazard",
+    "details": "Open manhole on walking path. Very dangerous especially at night.",
+    "category": "Road Safety",
+    "status": "pending",
+    "priority": "high",
+    "location": {
+      "address": "Gulshan 2 Circle",
+      "lat": 23.7925,
+      "lng": 90.4078
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1581092580497-e0e323829a5b?w=800"
+    ],
+    "createdBy": {
+      "name": "Sara Ahmed",
+      "avatar": "https://ui-avatars.com/api/?name=Sara+Ahmed&background=ec4899&color=fff"
+    },
+    "likes": 63,
+    "createdAt": "2025-12-07T14:20:00Z"
+  },
+  {
+    "no": 7,
+    "title": "Fallen tree blocking road after storm",
+    "details": "Large tree fell during last night’s storm. Traffic completely blocked.",
+    "category": "Road Blockage",
+    "status": "in-progress",
+    "priority": "high",
+    "location": {
+      "address": "Dhanmondi Road 27",
+      "lat": 23.7465,
+      "lng": 90.3772
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1603733198603-3c6043c9b601?w=800"
+    ],
+    "createdBy": {
+      "name": "Karim Rahman",
+      "avatar": "https://ui-avatars.com/api/?name=Karim+Rahman&background=0ea5e9&color=fff"
+    },
+    "likes": 41,
+    "createdAt": "2025-12-08T06:30:00Z"
+  },
+  {
+    "no": 8,
+    "title": "No zebra crossing near school",
+    "details": "Children crossing busy road without safe zone needed.",
+    "category": "Traffic Safety",
+    "status": "pending",
+    "priority": "medium",
+    "location": {
+      "address": "Viqarunnisa Noon School Gate",
+      "lat": 23.7391,
+      "lng": 90.4081
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=800"
+    ],
+    "createdBy": {
+      "name": "Nabila Islam",
+      "avatar": "https://ui-avatars.com/api/?name=Nabila+Islam&background=8b5cf6&color=fff"
+    },
+    "likes": 89,
+    "createdAt": "2025-11-29T11:00:00Z"
+  },
+  {
+    "no": 9,
+    "title": "Park bench broken and rusty",
+    "details": "Several benches in the park are damaged. Risk of injury.",
+    "category": "Park Maintenance",
+    "status": "resolved",
+    "priority": "low",
+    "location": {
+      "address": "Ramna Park, Dhaka",
+      "lat": 23.7387,
+      "lng": 90.3984
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800"
+    ],
+    "createdBy": {
+      "name": "Tanjim Reza",
+      "avatar": "https://ui-avatars.com/api/?name=Tanjim+Reza&background=f59e0b&color=fff"
+    },
+    "likes": 18,
+    "createdAt": "2025-12-05T16:45:00Z"
+  },
+  {
+    "no": 10,
+    "title": "Leaking water pipeline flooding street",
+    "details": "Water wasting and road becoming slippery.",
+    "category": "Water Supply",
+    "status": "resolved",
+    "priority": "high",
+    "location": {
+      "address": "Khilgaon Taltola",
+      "lat": 23.7548,
+      "lng": 90.4236
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1587502537744-2c1923b3d1d7?w=800"
+    ],
+    "createdBy": {
+      "name": "Rafi Hasan",
+      "avatar": "https://ui-avatars.com/api/?name=Rafi+Hasan&background=10b981&color=fff"
+    },
+    "likes": 52,
+    "createdAt": "2025-11-25T09:20:00Z"
+  },
+  {
+    "no": 11,
+    "title": "Overflowing public dustbin near market",
+    "details": "Garbage spilling onto the road, attracting rats and creating health hazard.",
+    "category": "Waste Management",
+    "status": "pending",
+    "priority": "high",
+    "location": {
+      "address": "Kawran Bazar, Dhaka",
+      "lat": 23.7512,
+      "lng": 90.3926
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1581578731548-f4e8e6a9e087?w=800"
+    ],
+    "createdBy": {
+      "name": "Mehedi Hasan",
+      "avatar": "https://ui-avatars.com/api/?name=Mehedi+Hasan&background=f97316&color=fff"
+    },
+    "likes": 61,
+    "createdAt": "2025-12-07T10:10:00Z"
+  },
+  {
+    "no": 12,
+    "title": "Damaged speed breaker causing accidents",
+    "details": "Speed breaker is broken and uneven. Motorcycles skidding frequently.",
+    "category": "Road Safety",
+    "status": "in-progress",
+    "priority": "high",
+    "location": {
+      "address": "Farmgate Overpass",
+      "lat": 23.7573,
+      "lng": 90.3901
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1605146769289-4404d53de8e9?w=800"
+    ],
+    "createdBy": {
+      "name": "Shakib Al Hasan",
+      "avatar": "https://ui-avatars.com/api/?name=Shakib+Al+Hasan&background=dc2626&color=fff"
+    },
+    "likes": 44,
+    "createdAt": "2025-12-06T17:55:00Z"
+  },
+  {
+    "no": 13,
+    "title": "Street vendor blocking emergency lane",
+    "details": "Food carts parked permanently on red-marked no-parking zone.",
+    "category": "Encroachment",
+    "status": "resolved",
+    "priority": "medium",
+    "location": {
+      "address": "Shahbagh Intersection",
+      "lat": 23.7382,
+      "lng": 90.3959
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800"
+    ],
+    "createdBy": {
+      "name": "Riya Moni",
+      "avatar": "https://ui-avatars.com/api/?name=Riya+Moni&background=ec4899&color=fff"
+    },
+    "likes": 38,
+    "createdAt": "2025-12-05T13:20:00Z"
+  },
+  {
+    "no": 14,
+    "title": "Playground equipment broken in children’s park",
+    "details": "Swing set and slide are rusted and unsafe for kids.",
+    "category": "Park Maintenance",
+    "status": "pending",
+    "priority": "medium",
+    "location": {
+      "address": "Shishu Park, Shahbagh",
+      "lat": 23.7358,
+      "lng": 90.3971
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800"
+    ],
+    "createdBy": {
+      "name": "Farah Deeba",
+      "avatar": "https://ui-avatars.com/api/?name=Farah+Deeba&background=8b5cf6&color=fff"
+    },
+    "likes": 27,
+    "createdAt": "2025-12-04T15:30:00Z"
+  },
+  {
+    "no": 15,
+    "title": "No signage at dangerous curve",
+    "details": "Sharp blind turn with no warning sign or mirror needed.",
+    "category": "Traffic Safety",
+    "status": "pending",
+    "priority": "medium",
+    "location": {
+      "address": "Manik Mia Avenue turn",
+      "lat": 23.7499,
+      "lng": 90.3778
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800"
+    ],
+    "createdBy": {
+      "name": "Opu Biswas",
+      "avatar": "https://ui-avatars.com/api/?name=Opu+Biswas&background=0ea5e9&color=fff"
+    },
+    "likes": 31,
+    "createdAt": "2025-12-03T18:00:00Z"
+  },
+  {
+    "no": 16,
+    "title": "Waterlogged underpass after rain",
+    "details": "Underpass flooded up to knee level. Vehicles and people unable to pass.",
+    "category": "Drainage",
+    "status": "in-progress",
+    "priority": "high",
+    "location": {
+      "address": "Kuril Flyover Underpass",
+      "lat": 23.8144,
+      "lng": 90.4202
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1621905252507-bacb8c7bb1f4?w=800"
+    ],
+    "createdBy": {
+      "name": "Tanzila Rahman",
+      "avatar": "https://ui-avatars.com/api/?name=Tanzila+Rahman&background=f59e0b&color=fff"
+    },
+    "likes": 79,
+    "createdAt": "2025-12-08T09:45:00Z"
+  },
+  {
+    "no": 17,
+    "title": "Faulty traffic signal at intersection",
+    "details": "Signal stuck on red for 10+ minutes causing massive jam.",
+    "category": "Traffic Signal",
+    "status": "resolved",
+    "priority": "high",
+    "location": {
+      "address": "Bijoy Sarani Signal",
+      "lat": 23.7567,
+      "lng": 90.3872
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1556742111-a301076d9d41?w=800"
+    ],
+    "createdBy": {
+      "name": "Arif Hossain",
+      "avatar": "https://ui-avatars.com/api/?name=Arif+Hossain&background=0891b2&color=fff"
+    },
+    "likes": 93,
+    "createdAt": "2025-12-08T08:20:00Z"
+  },
+  {
+    "no": 18,
+    "title": "Stray dogs attacking pedestrians",
+    "details": "Pack of 7–8 aggressive dogs near residential gate.",
+    "category": "Animal Control",
+    "status": "closed",
+    "priority": "medium",
+    "location": {
+      "address": "Baridhara DOHS Gate 2",
+      "lat": 23.8135,
+      "lng": 90.4125
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800"
+    ],
+    "createdBy": {
+      "name": "Salma Akter",
+      "avatar": "https://ui-avatars.com/api/?name=Salma+Akter&background=7c3aed&color=fff"
+    },
+    "likes": 22,
+    "createdAt": "2025-12-07T20:00:00Z"
+  },
+  {
+    "no": 19,
+    "title": "Broken footbridge railing on overpass",
+    "details": "Railing missing on one side – high risk of falling.",
+    "category": "Road Safety",
+    "status": "resolved",
+    "priority": "high",
+    "location": {
+      "address": "Mohakhali Flyover",
+      "lat": 23.7783,
+      "lng": 90.3991
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1581092580497-e0e323829a5b?w=800"
+    ],
+    "createdBy": {
+      "name": "Zahir Rayhan",
+      "avatar": "https://ui-avatars.com/api/?name=Zahir+Rayhan&background=ef4444&color=fff"
+    },
+    "likes": 58,
+    "createdAt": "2025-12-06T11:15:00Z"
+  },
+  {
+    "no": 20,
+    "title": "Public toilet out of order for months",
+    "details": "Toilet at bus terminal locked and unusable. Passengers facing huge inconvenience.",
+    "category": "Public Facility",
+    "status": "resolved",
+    "priority": "medium",
+    "location": {
+      "address": "Gabtoli Bus Terminal",
+      "lat": 23.7842,
+      "lng": 90.3441
+    },
+    "photos": [
+      "https://images.unsplash.com/photo-1582408921715-18e780636049?w=800"
+    ],
+    "createdBy": {
+      "name": "Nusrat Jahan",
+      "avatar": "https://ui-avatars.com/api/?name=Nusrat+Jahan&background=fb923c&color=fff"
+    },
+    "likes": 66,
+    "createdAt": "2025-11-18T14:30:00Z"
+  }
+]

@@ -1,12 +1,14 @@
 import React from "react";
 import Logo from "../Logo";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { GrLogout } from "react-icons/gr";
 import useAuth from "../../MyHooks/useAuth";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location, "from navbar ");
   const { user, logOut } = useAuth();
   // console.log(user);
   const links = (
@@ -21,20 +23,20 @@ const Navbar = () => {
         <NavLink to="/login">Tab 1 </NavLink>{" "}
       </li>
       <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
-        <NavLink to="tab2">Tab 2 </NavLink>{" "}
+        <NavLink to="dashboard">Tab 2 </NavLink>{" "}
       </li>
     </>
   );
 
   const handleLogOut = () => {
-    logOut().then((result) => {
+    logOut().then(() => {
       // console.log(result);
       navigate("/");
       toast("Logged Out Successfull");
     });
   };
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar max-w-[90%] mx-auto py-0">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

@@ -1,11 +1,12 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginWithEP, createUserWithGoogle } = useAuth();
   const {
     register,
@@ -20,7 +21,7 @@ const LoginPage = () => {
       .then((result) => {
         console.log(result);
         toast.success("Log in successfull");
-        navigate("/");
+        navigate(location.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -32,7 +33,7 @@ const LoginPage = () => {
       .then((result) => {
         console.log(result.user);
         toast.success("User signed in by google");
-        navigate("/");
+        navigate(location.state || "/");
       })
       .catch((error) => {
         console.log(error.message);
