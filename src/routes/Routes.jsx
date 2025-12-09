@@ -7,6 +7,8 @@ import Login from "../pages/LoginPage/Login";
 import Register from "../pages/RegisterPage/Register";
 import PrivateRoute from "../pages/PrivateRoute/PrivateRoute";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import ReportIssue from "../components/ReportIssue/ReportIssue";
+import All_Issues from "../All_Issues/All-Issues";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +28,16 @@ export const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "report-issue",
+        Component: ReportIssue,
+      },
+      {
+        path: "all-issues",
+        Component: All_Issues,
+        loader: () =>
+          fetch("http://localhost:3000/all-issues").then((res) => res.json()),
       },
     ],
   },

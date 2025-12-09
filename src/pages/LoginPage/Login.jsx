@@ -21,7 +21,7 @@ const LoginPage = () => {
       .then((result) => {
         console.log(result);
         toast.success("Log in successfull");
-        navigate(location.state || "/");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -33,7 +33,7 @@ const LoginPage = () => {
       .then((result) => {
         console.log(result.user);
         toast.success("User signed in by google");
-        navigate(location.state || "/");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error.message);
@@ -127,6 +127,7 @@ const LoginPage = () => {
           <p className="mt-8 text-center text-orange-200">
             Don't have an account?{" "}
             <Link
+              state={location?.state}
               to="/register"
               className="font-bold text-white hover:text-orange-300 transition"
             >

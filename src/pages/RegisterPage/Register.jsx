@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -9,6 +9,8 @@ import axios from "axios";
 const LoginPage = () => {
   const [remember, setRemember] = useState(false);
   const { createUserWithGoogle, createUserWithEP, updateUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -47,6 +49,7 @@ const LoginPage = () => {
         });
 
         toast("user reg done");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -57,6 +60,7 @@ const LoginPage = () => {
     createUserWithGoogle()
       .then((result) => {
         console.log(result.user);
+        navigate(location?.state || "/");
         toast.success("User signed in by google");
       })
       .catch((error) => {

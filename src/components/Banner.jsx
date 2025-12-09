@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const slides = [
   {
@@ -98,9 +99,11 @@ const Banner = () => {
               </p>
 
               <div className="flex gap-4">
-                <button className="cursor-pointer px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-none shadow-lg transform hover:scale-105 transition duration-300">
-                  Report an Issue
-                </button>
+                <Link to="report-issue">
+                  <button className="cursor-pointer px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-none shadow-lg transform hover:scale-105 transition duration-300">
+                    Report an Issue
+                  </button>
+                </Link>
                 <button className="cursor-pointer px-8 py-4 bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold rounded-none hover:bg-white/30 transition">
                   View All Issues
                 </button>
