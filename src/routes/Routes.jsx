@@ -9,6 +9,7 @@ import PrivateRoute from "../pages/PrivateRoute/PrivateRoute";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ReportIssue from "../components/ReportIssue/ReportIssue";
 import All_Issues from "../All_Issues/All-Issues";
+import IssueDetail from "../All_Issues/IssueDetail/IssueDetail";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ export const router = createBrowserRouter([
         Component: All_Issues,
         loader: () =>
           fetch("http://localhost:3000/all-issues").then((res) => res.json()),
+      },
+      {
+        path: "issue/:id",
+        element: (
+          <PrivateRoute>
+            <IssueDetail></IssueDetail>
+          </PrivateRoute>
+        ),
       },
     ],
   },

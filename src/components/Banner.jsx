@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const slides = [
   {
@@ -34,6 +34,7 @@ const slides = [
 ];
 
 const Banner = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Auto-play logic
@@ -104,7 +105,10 @@ const Banner = () => {
                     Report an Issue
                   </button>
                 </Link>
-                <button className="cursor-pointer px-8 py-4 bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold rounded-none hover:bg-white/30 transition">
+                <button
+                  onClick={() => navigate("/all-issues")}
+                  className="cursor-pointer px-8 py-4 bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold rounded-none hover:bg-white/30 transition"
+                >
                   View All Issues
                 </button>
               </div>
