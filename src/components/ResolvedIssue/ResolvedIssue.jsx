@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../AxiosSecure/useAxiosSecure";
 import { Link } from "react-router-dom";
 import { Eye, MapPin, ThumbsUp } from "lucide-react";
-import { FaThumbsUp } from "react-icons/fa";
+import { FaArrowRight, FaThumbsUp } from "react-icons/fa";
 import useAuth from "../../MyHooks/useAuth";
 
 const ResolvedIssue = () => {
@@ -47,10 +47,14 @@ const ResolvedIssue = () => {
   console.log(resolvedIssue);
   return (
     <>
-      <div>
-        <h2 className=" text-center text-5xl text-primary font-bold my-12">
-          Latest Resolved issue found: {resolvedIssue.length}{" "}
+      <div className="text-center mt-20">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          Resolved <span className="text-orange-500">Issues</span>
         </h2>
+        <p className="text-xl text-gray-600 max-w-4xl mx-auto text-center mb-16 ">
+          "See the latest issues we’ve resolved. Your feedback helps us fix bugs
+          and improve features faster!"
+        </p>
       </div>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1400px] mx-auto gap-6 mb-12">
         {resolvedIssue.map((issue) => (
@@ -136,6 +140,12 @@ const ResolvedIssue = () => {
           </section>
         ))}
       </section>
+
+      <Link to="/all-issues">
+        <button className="flex mx-auto justify-center items-center gap-4 bg-primary text-white font-bold py-4 px-12 rounded-0 text-lg shadow-xl hover:shadow-2xl transition ease-in-out duration-300 hover:scale-105 mb-12">
+          See All Issues <FaArrowRight size={18}></FaArrowRight>
+        </button>
+      </Link>
     </>
   );
 };

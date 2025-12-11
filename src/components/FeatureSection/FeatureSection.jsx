@@ -9,6 +9,7 @@ import {
   Smartphone,
   BellRing,
 } from "lucide-react";
+import { FaArrowRight } from "react-icons/fa";
 
 const features = [
   {
@@ -67,8 +68,8 @@ const FeatureSection = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Fix Your City Together
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            Fix Your <span className="text-orange-500">City Together</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto">
             A simple, transparent, and powerful platform that connects citizens
@@ -97,11 +98,12 @@ const FeatureSection = () => {
         </div>
 
         {/* CTA */}
-        {/* <div className="text-center mt-16">
-          <button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-12 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-            Report an Issue Now – It's Free
+        <div className="text-center mt-16 mx-auto">
+          <button className="flex mx-auto justify-center items-center gap-4 bg-primary text-white font-bold py-4 px-12 rounded-0 text-lg shadow-xl hover:shadow-2xl transition ease-in-out duration-300 hover:scale-105">
+            Report an Issue
+            <FaArrowRight size={18}></FaArrowRight>
           </button>
-        </div> */}
+        </div>
       </div>
     </section>
   );

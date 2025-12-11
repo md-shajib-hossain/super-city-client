@@ -13,16 +13,16 @@ const Navbar = () => {
   // console.log(user);
   const links = (
     <>
-      <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
+      <li className="text-xl font-semibold hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
         <NavLink to="/">Home </NavLink>{" "}
       </li>
-      <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
+      <li className="text-xl font-semibold hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
         <NavLink to="/all-issues">All Issues </NavLink>{" "}
       </li>
-      <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
+      <li className="text-xl font-semibold hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
         <NavLink to="/login">Tab 1 </NavLink>{" "}
       </li>
-      <li className="hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
+      <li className="text-xl font-semibold hover:bg-primary hover:text-white transition duration-300 ease-initial hover:scale-120">
         <NavLink to="dashboard">Tab 2 </NavLink>{" "}
       </li>
     </>

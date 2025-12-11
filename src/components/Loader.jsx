@@ -2,8 +2,8 @@ import React from "react";
 import { MoonLoader } from "react-spinners";
 const Loader = () => {
   return (
-    <div className="w-7xl mx-auto grid content-center min-h-screen">
-      <MoonLoader size={66} color="orange" />
+    <div className="flex items-center justify-center min-h-screen">
+      <MoonLoader size={100} color="orange" />
     </div>
   );
 };
