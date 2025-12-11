@@ -5,6 +5,7 @@ import Banner from "../../components/Banner";
 import useAuth from "../../MyHooks/useAuth";
 import Loader from "../../components/Loader";
 import ResolvedIssue from "../../components/ResolvedIssue/ResolvedIssue";
+import FeatureSection from "../../components/FeatureSection/FeatureSection";
 
 const Home = () => {
   const { loading } = useAuth();
@@ -15,6 +16,7 @@ const Home = () => {
     <>
       <Banner></Banner>
       <ResolvedIssue></ResolvedIssue>
+      <FeatureSection></FeatureSection>
     </>
   );
 };
