@@ -10,6 +10,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import ReportIssue from "../components/ReportIssue/ReportIssue";
 import All_Issues from "../All_Issues/All-Issues";
 import IssueDetail from "../All_Issues/IssueDetail/IssueDetail";
+import MyIssues from "../pages/Dashboard/MyIssues";
 
 export const router = createBrowserRouter([
   {
@@ -58,5 +59,11 @@ export const router = createBrowserRouter([
         <Dashboard></Dashboard>
       </PrivateRoute>
     ),
+    children: [
+      {
+        path: "my-issues",
+        Component: MyIssues,
+      },
+    ],
   },
 ]);

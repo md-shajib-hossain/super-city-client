@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedin, FaGlobe, FaUserCircle } from "react-icons/fa";
 import Banner from "../../components/Banner";
 import useAuth from "../../MyHooks/useAuth";
 import Loader from "../../components/Loader";
+import ResolvedIssue from "../../components/ResolvedIssue/ResolvedIssue";
 
 const Home = () => {
   const { loading } = useAuth();
@@ -13,6 +14,7 @@ const Home = () => {
   return (
     <>
       <Banner></Banner>
+      <ResolvedIssue></ResolvedIssue>
     </>
   );
 };

@@ -31,7 +31,7 @@ const IssueCard = ({ issue }) => {
     low: "bg-gray-100 text-gray-600",
   };
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100">
+    <div className="bg-white shadow-lg overflow-hidden hover:shadow-orange-300 hover:shadow-lg transition-all duration-300 border border-gray-100">
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
         <img
@@ -55,7 +55,9 @@ const IssueCard = ({ issue }) => {
       <div className="p-5">
         {/* Category & Priority */}
         <div className="flex justify-between items-start mb-3">
-          <span className="text-sm font-medium text-gray-600">{category}</span>
+          <span className="text-sm font-medium bg-blue-50 px-3 rounded-full text-gray-600">
+            {category}
+          </span>
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold ${
               priorityColors[priority] || priorityColors.medium
@@ -93,7 +95,7 @@ const IssueCard = ({ issue }) => {
           {/* View Details Button */}
           <Link
             to={`/issue/${_id}`}
-            className="flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-xl transition transform hover:scale-105"
+            className="flex items-center gap-2 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm  transition transform hover:scale-105"
           >
             <Eye size={18} />
             View Details
