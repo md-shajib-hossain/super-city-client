@@ -17,6 +17,7 @@
     ],
     "createdBy": {
       "name": "Abdul Karim",
+      "creatorEmail": "AbdulKarim@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Abdul+Karim&background=ea580c&color=fff"
     },
     "likes": 48,
@@ -39,6 +40,7 @@
     ],
     "createdBy": {
       "name": "Fatima Rahman",
+      "creatorEmail": "FatimaRahman@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Fatima+Rahman&background=f97316&color=fff"
     },
     "likes": 34,
@@ -61,6 +63,7 @@
     ],
     "createdBy": {
       "name": "Rahim Khan",
+      "creatorEmail": "RahimKhan@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Rahim+Khan&background=dc2626&color=fff"
     },
     "likes": 29,
@@ -79,6 +82,7 @@
     ],
     "createdBy": {
       "name": "Ayesha Siddika",
+      "creatorEmail": "AyeshaSiddika@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Ayesha+Siddika&background=7c3aed&color=fff"
     },
     "likes": 72,
@@ -101,6 +105,7 @@
     ],
     "createdBy": {
       "name": "Imran Hossain",
+      "creatorEmail": "ImranHossain@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Imran+Hossain&background=0891b2&color=fff"
     },
     "likes": 55,
@@ -123,6 +128,7 @@
     ],
     "createdBy": {
       "name": "Sara Ahmed",
+      "creatorEmail": "SaraAhmed@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Sara+Ahmed&background=ec4899&color=fff"
     },
     "likes": 63,
@@ -145,6 +151,7 @@
     ],
     "createdBy": {
       "name": "Karim Rahman",
+      "creatorEmail": "KarimRahman@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Karim+Rahman&background=0ea5e9&color=fff"
     },
     "likes": 41,
@@ -167,6 +174,7 @@
     ],
     "createdBy": {
       "name": "Nabila Islam",
+      "creatorEmail": "NabilaIslam@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Nabila+Islam&background=8b5cf6&color=fff"
     },
     "likes": 89,
@@ -189,6 +197,7 @@
     ],
     "createdBy": {
       "name": "Tanjim Reza",
+      "creatorEmail": "TanjimReza@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Tanjim+Reza&background=f59e0b&color=fff"
     },
     "likes": 18,
@@ -211,6 +220,7 @@
     ],
     "createdBy": {
       "name": "Rafi Hasan",
+      "creatorEmail": "RafiHasan@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Rafi+Hasan&background=10b981&color=fff"
     },
     "likes": 52,
@@ -233,7 +243,8 @@
     ],
     "createdBy": {
       "name": "Mehedi Hasan",
-      "avatar": "https://ui-avatars.com/api/?name=Mehedi+Hasan&background=f97316&color=fff"
+      "creatorEmail": "MehediHasan@gmail.com",
+      "avatar": "https://ui-avatars.com/api/?name=Mehedi+Hasan&background=f desh97316&color=fff"
     },
     "likes": 61,
     "createdAt": "2025-12-07T10:10:00Z"
@@ -255,6 +266,7 @@
     ],
     "createdBy": {
       "name": "Shakib Al Hasan",
+      "creatorEmail": "ShakibAlHasan@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Shakib+Al+Hasan&background=dc2626&color=fff"
     },
     "likes": 44,
@@ -277,6 +289,7 @@
     ],
     "createdBy": {
       "name": "Riya Moni",
+      "creatorEmail": "RiyaMoni@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Riya+Moni&background=ec4899&color=fff"
     },
     "likes": 38,
@@ -299,6 +312,7 @@
     ],
     "createdBy": {
       "name": "Farah Deeba",
+      "creatorEmail": "FarahDeeba@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Farah+Deeba&background=8b5cf6&color=fff"
     },
     "likes": 27,
@@ -321,6 +335,7 @@
     ],
     "createdBy": {
       "name": "Opu Biswas",
+      "creatorEmail": "OpuBiswas@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Opu+Biswas&background=0ea5e9&color=fff"
     },
     "likes": 31,
@@ -343,6 +358,7 @@
     ],
     "createdBy": {
       "name": "Tanzila Rahman",
+      "creatorEmail": "TanzilaRahman@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Tanzila+Rahman&background=f59e0b&color=fff"
     },
     "likes": 79,
@@ -365,6 +381,7 @@
     ],
     "createdBy": {
       "name": "Arif Hossain",
+      "creatorEmail": "ArifHossain@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Arif+Hossain&background=0891b2&color=fff"
     },
     "likes": 93,
@@ -387,6 +404,7 @@
     ],
     "createdBy": {
       "name": "Salma Akter",
+      "creatorEmail": "SalmaAkter@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Salma+Akter&background=7c3aed&color=fff"
     },
     "likes": 22,
@@ -409,6 +427,7 @@
     ],
     "createdBy": {
       "name": "Zahir Rayhan",
+      "creatorEmail": "ZahirRayhan@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Zahir+Rayhan&background=ef4444&color=fff"
     },
     "likes": 58,
@@ -431,6 +450,7 @@
     ],
     "createdBy": {
       "name": "Nusrat Jahan",
+      "creatorEmail": "NusratJahan@gmail.com",
       "avatar": "https://ui-avatars.com/api/?name=Nusrat+Jahan&background=fb923c&color=fff"
     },
     "likes": 66,

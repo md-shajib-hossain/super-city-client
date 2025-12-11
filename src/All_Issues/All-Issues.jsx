@@ -1,14 +1,25 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
 import IssueCard from "./IssueCard";
 import useAuth from "../MyHooks/useAuth";
 import Loader from "../components/Loader";
 import { easeInOut, motion } from "framer-motion";
-const All_Issues = () => {
-  const issues = useLoaderData();
-  const { loading } = useAuth();
-  console.log(issues, "issue got");
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../AxiosSecure/useAxiosSecure";
 
+const All_Issues = () => {
+  const axiosSecure = useAxiosSecure();
+
+  const { user, loading } = useAuth();
+
+  const { data: allIssue = [] } = useQuery({
+    queryKey: ["allIssues", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/all-issues");
+      const data = res.data;
+      return data;
+    },
+  });
+  console.log(allIssue, "ebaar maybe paisi");
   if (loading) {
     return <Loader></Loader>;
   }
@@ -26,11 +37,11 @@ const All_Issues = () => {
         <div>
           <p>
             Total issue found{" "}
-            <strong className="text-primary">({issues.length})</strong>{" "}
+            <strong className="text-primary">({allIssue.length})</strong>{" "}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 w-[90%] md:w-full lg:grid-cols-4 gap-4 space-y-6 my-10 max-w-7xl mx-auto">
-          {issues.map((issue) => (
+          {allIssue.map((issue) => (
             <IssueCard key={issue.no} issue={issue}></IssueCard>
           ))}
         </div>

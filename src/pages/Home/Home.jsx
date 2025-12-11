@@ -8,6 +8,7 @@ import ResolvedIssue from "../../components/ResolvedIssue/ResolvedIssue";
 import FeatureSection from "../../components/FeatureSection/FeatureSection";
 import HowItWorks from "../../components/HowItWorks/HowItWorks";
 import FAQ from "../../components/FAQ/FAQ";
+import NewsLetter from "../../components/NewLetter/NewsLetter";
 
 const Home = () => {
   const { loading } = useAuth();
@@ -21,6 +22,7 @@ const Home = () => {
       <FeatureSection></FeatureSection>
       <HowItWorks></HowItWorks>
       <FAQ></FAQ>
+      <NewsLetter></NewsLetter>
     </>
   );
 };

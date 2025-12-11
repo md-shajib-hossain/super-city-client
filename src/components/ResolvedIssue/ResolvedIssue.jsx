@@ -11,6 +11,7 @@ import useAuth from "../../MyHooks/useAuth";
 const ResolvedIssue = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+
   const { data: resolvedIssue = [] } = useQuery({
     queryKey: ["resolvedIssue", user?.email],
     queryFn: async () => {
@@ -19,16 +20,6 @@ const ResolvedIssue = () => {
       return data;
     },
   });
-  // const {
-  //   _id,
-  //   title,
-  //   category,
-  //   status,
-  //   priority,
-  //   location,
-  //   photos,
-  //   likes = 0,
-  // } = resolvedIssue;
 
   // Status Badge Color
   const statusColors = {

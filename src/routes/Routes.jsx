@@ -38,8 +38,6 @@ export const router = createBrowserRouter([
       {
         path: "all-issues",
         Component: All_Issues,
-        loader: () =>
-          fetch("http://localhost:3000/all-issues").then((res) => res.json()),
       },
       {
         path: "issue/:id",
