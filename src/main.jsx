@@ -12,13 +12,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // tanstack query
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-        <ToastContainer position="top-right" autoClose={2000} />
-        <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
-      </AuthProvider>
-    </QueryClientProvider>
-  </StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={2000} />
+      <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
+    </AuthProvider>
+  </QueryClientProvider>
 );

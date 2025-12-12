@@ -1,9 +1,11 @@
 import { Eye, MapPin, ThumbsUp } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../AxiosSecure/useAxiosSecure";
 
 const IssueCard = ({ issue }) => {
-  console.log(issue, "from card");
+  // console.log(issue, "from card");
+  const axiosSecure = useAxiosSecure();
 
   //   distructure properties from issue
   const {
@@ -30,6 +32,10 @@ const IssueCard = ({ issue }) => {
     medium: "bg-orange-100 text-orange-700 border border-orange-300",
     low: "bg-gray-100 text-gray-600",
   };
+  //
+  const handleDetail = (id) => {};
+
+  //
   return (
     <div className="bg-white shadow-lg overflow-hidden hover:shadow-orange-300 hover:shadow-lg transition-all duration-300 border border-gray-100">
       {/* Image */}
@@ -77,7 +83,7 @@ const IssueCard = ({ issue }) => {
         </h3>
 
         {/* Location */}
-        <div className="flex items-center gap-400 mb-4">
+        <div className="flex items-center gap-4 mb-4">
           <MapPin size={16} className="text-orange-500" />
           <span className="text-sm ml-1 truncate">{location.address}</span>
         </div>
@@ -94,6 +100,7 @@ const IssueCard = ({ issue }) => {
 
           {/* View Details Button */}
           <Link
+            onClick={() => handleDetail(issue._id)}
             to={`/issue/${_id}`}
             className="flex items-center gap-2 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm  transition transform hover:scale-105"
           >
