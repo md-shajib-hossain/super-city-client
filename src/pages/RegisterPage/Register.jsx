@@ -5,8 +5,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
 import { toast } from "react-toastify";
 import axios from "axios";
+import useAxiosSecure from "../../AxiosSecure/useAxiosSecure";
 
 const LoginPage = () => {
+  const axiosSecure = useAxiosSecure();
   const [remember, setRemember] = useState(false);
   const { createUserWithGoogle, createUserWithEP, updateUser } = useAuth();
   const location = useLocation();
@@ -38,7 +40,19 @@ const LoginPage = () => {
             displayName: data.name,
             photoURL: res.data.data.url,
           };
-          // console.log(res.data.data.url);
+
+          // create user in db
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+          axiosSecure.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user created in the database");
+            }
+          });
+
           // update profile func call here
           updateUser(updateProfile)
             .then()

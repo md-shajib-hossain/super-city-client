@@ -20,7 +20,7 @@ const ResolvedIssue = () => {
       return data;
     },
   });
-
+  console.log(resolvedIssue);
   // Status Badge Color
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
@@ -35,7 +35,7 @@ const ResolvedIssue = () => {
     medium: "bg-orange-100 text-orange-700 border border-orange-300",
     low: "bg-gray-100 text-gray-600",
   };
-  console.log(resolvedIssue);
+
   return (
     <>
       <div className="text-center mt-20">

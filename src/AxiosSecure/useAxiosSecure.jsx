@@ -1,6 +1,6 @@
-import React from "react";
-// import useAuth from "../MyHooks/useAuth";
-// import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import useAuth from "../MyHooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const axiosSecure = axios.create({
@@ -8,14 +8,15 @@ const axiosSecure = axios.create({
 });
 
 const useAxiosSecure = () => {
-  //   const { user, logOut } = useAuth();
-  //   const navigate = useNavigate();
+  // const { user, logOut } = useAuth();
+  // const navigate = useNavigate();
 
-  //   useEffect(() => {
-  //     const reqInterceptor= axiosSecure.interceptors.request.use(config=>{
-  //         config.headers.Authorization= `Bearer`
-  //     })
-  //   }, []);
+  // useEffect(() => {
+  //   const reqInterceptor = axiosSecure.interceptors.request.use((config) => {
+  //     config.headers.Authorization = `Bearer ${user?.accessToken}`;
+  //   });
+  // }, [user]);
+
   return axiosSecure;
 };
 

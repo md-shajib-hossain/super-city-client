@@ -2,22 +2,16 @@ import { Eye, MapPin, ThumbsUp } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../AxiosSecure/useAxiosSecure";
+import HighlightText from "../components/SHared/HighlightText";
+import { toast } from "react-toastify";
 
-const IssueCard = ({ issue }) => {
+const IssueCard = ({ issue, searchTerm }) => {
   // console.log(issue, "from card");
   const axiosSecure = useAxiosSecure();
 
   //   distructure properties from issue
-  const {
-    _id,
-    title,
-    category,
-    status,
-    priority,
-    location,
-    photos,
-    likes = 0,
-  } = issue;
+  const { _id, title, category, status, priority, location, photos, likes } =
+    issue;
   // Status Badge Color
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
@@ -32,8 +26,16 @@ const IssueCard = ({ issue }) => {
     medium: "bg-orange-100 text-orange-700 border border-orange-300",
     low: "bg-gray-100 text-gray-600",
   };
-  //
-  const handleDetail = (id) => {};
+  // handle likes btn increament
+  const handleLikes = async (id) => {
+    console.log(id, "id pawa dorkar", typeof id);
+    const updateLikes = {
+      likes: Number(issue.likes),
+    };
+    const response = await axiosSecure.patch(`/all-issues/${id}`, updateLikes);
+    toast.success("You voted this issue ❤️");
+    console.log(response);
+  };
 
   //
   return (
@@ -79,7 +81,7 @@ const IssueCard = ({ issue }) => {
 
         {/* Title */}
         <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
-          {title}
+          <HighlightText text={title || ""} highlight={searchTerm} />
         </h3>
 
         {/* Location */}
@@ -91,7 +93,10 @@ const IssueCard = ({ issue }) => {
         {/* Footer: Upvote + View Button */}
         <div className="flex justify-between items-center pt-4 border-t border-gray-100">
           {/* Upvote */}
-          <button className="flex items-center gap-2 text-gray-600 hover:text-orange-600 transition group">
+          <button
+            onClick={() => handleLikes(issue._id)}
+            className="flex items-center gap-2 text-gray-600 hover:text-orange-600 transition group"
+          >
             <div className="p-2 rounded-lg bg-gray-50 group-hover:bg-orange-50 transition">
               <ThumbsUp size={18} className="group-hover:fill-orange-600" />
             </div>
