@@ -2,6 +2,8 @@ import React from "react";
 import { GoIssueOpened } from "react-icons/go";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuSettings } from "react-icons/lu";
+import { TbFileReport } from "react-icons/tb";
+
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "../../components/Logo";
 const Dashboard = () => {
@@ -67,14 +69,25 @@ const Dashboard = () => {
                 </Link>
               </li>
               {/* my sidebar contents  */}
+
               <li>
                 <NavLink
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="My Issues"
-                  to="my-issues"
+                  to="/dashboard/my-issues"
                 >
                   <GoIssueOpened size={20} />
                   <span className="is-drawer-close:hidden">My Issues </span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Report Issue"
+                  to="/dashboard/report-issue"
+                >
+                  <TbFileReport size={20} />
+                  <span className="is-drawer-close:hidden">Report Issue </span>
                 </NavLink>
               </li>
 

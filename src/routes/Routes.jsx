@@ -31,10 +31,7 @@ export const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
-      {
-        path: "report-issue",
-        Component: ReportIssue,
-      },
+
       {
         path: "all-issues",
         Component: All_Issues,
@@ -61,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "my-issues",
         Component: MyIssues,
+      },
+      {
+        path: "report-issue",
+        Component: ReportIssue,
       },
     ],
   },

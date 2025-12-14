@@ -1,20 +1,30 @@
-import { useState } from "react";
-import { MapPin, Upload, X, Loader2 } from "lucide-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Upload, MapPin, X } from "lucide-react";
+import useAxiosSecure from "../../AxiosSecure/useAxiosSecure";
+import { toast } from "react-hot-toast";
 
 const ReportIssue = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    details: "",
-    category: "",
-    priority: "medium",
-    address: "",
-    lat: "",
-    lng: "",
-  });
-
-  const [photos, setPhotos] = useState([]);
+  const axiosSecure = useAxiosSecure();
+  const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGettingLocation, setIsGettingLocation] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
+      title: "",
+      description: "",
+      category: "",
+      location: "",
+      image: null,
+    },
+  });
 
   const categories = [
     "Road Damage",
@@ -22,278 +32,335 @@ const ReportIssue = () => {
     "Drainage",
     "Waste Management",
     "Encroachment",
-    "Park Maintenance",
-    "Traffic Safety",
     "Road Safety",
     "Road Blockage",
+    "Traffic Safety",
+    "Park Maintenance",
     "Water Supply",
+    "Animal Control",
     "Public Facility",
+    "Traffic Signal",
   ];
 
-  // Handle text inputs
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const description = watch("description");
 
-  // Handle photo upload
-  const handlePhotoChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newPhotos = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      name: file.name,
-    }));
-    setPhotos((prev) => [...prev, ...newPhotos].slice(0, 5)); // Max 5 photos
-  };
-
-  // Remove photo
-  const removePhoto = (index) => {
-    setPhotos((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // Get current location
-  const getCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
-      return;
-    }
-
-    setIsGettingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        // Reverse geocoding using Nominatim (OpenStreetMap)
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-          );
-          const data = await res.json();
-          setFormData({
-            ...formData,
-            lat: latitude.toFixed(6),
-            lng: longitude.toFixed(6),
-            address: data.display_name || "Location fetched",
-          });
-        } catch (err) {
-          setFormData({
-            ...formData,
-            lat: latitude.toFixed(6),
-            lng: longitude.toFixed(6),
-            address: "Location fetched (address not available)",
-          });
-        }
-        setIsGettingLocation(false);
-      },
-      () => {
-        alert("Unable to retrieve your location");
-        setIsGettingLocation(false);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image size should be less than 5MB");
+        return;
       }
-    );
+
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please upload an image file");
+        return;
+      }
+
+      setValue("image", file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  // Handle submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.title || !formData.category || photos.length === 0) {
-      alert("Please fill all required fields and add at least one photo");
-      return;
-    }
+  const removeImage = () => {
+    setValue("image", null);
+    setImagePreview(null);
+  };
 
+  const onSubmit = async (data) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Submitted:", { formData, photos });
-    alert("Issue reported successfully!");
-    setIsSubmitting(false);
+
+    try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("category", data.category);
+      formData.append("location", data.location);
+
+      if (data.image) {
+        formData.append("image", data.image);
+      }
+
+      // Submit to backend
+      const response = await axiosSecure.post(
+        "/all-issues/create-new-issue",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Response:", response.data);
+
+      toast.success("Issue submitted successfully! ✅");
+
+      // Reset form
+      reset();
+      setImagePreview(null);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(error.response?.data?.message || "Failed to submit issue");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-orange-950 to-amber-900 py-12 px-4">
+    <div className="min-h-screen bg-gray-100  py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-white mb-3">
-            Report a Public Issue
-          </h1>
-          <p className="text-orange-200">
-            Help make your city better – your report matters
-          </p>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20"
-        >
-          {/* Title */}
-          <div className="mb-6">
-            <label className="block text-white font-medium mb-2">
-              Issue Title *
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              placeholder="e.g., Large pothole on main road"
-              className="w-full px-4 py-3 rounded-xl bg-white/20 border border-orange-500 text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
-            />
+        <div className="bg-white rounded-2xl shadow-md shadow-gray-500 hover:shadow-xl hover:shadow-primary transition ease-in-out duration-300 p-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Report an <span className="text-primary">Issue</span>
+            </h1>
+            <p className="text-gray-600">
+              Help us improve our community by reporting local issues
+            </p>
           </div>
 
-          {/* Details */}
-          <div className="mb-6">
-            <label className="block text-white font-medium mb-2">
-              Description *
-            </label>
-            <textarea
-              name="details"
-              value={formData.details}
-              onChange={handleChange}
-              rows="4"
-              placeholder="Describe the issue in detail..."
-              required
-              className="w-full px-4 py-3 rounded-xl bg-white/20 border border-orange-500 text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400 transition resize-none"
-            />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Category */}
+          <div className="space-y-6">
+            {/* Title */}
             <div>
-              <label className="block text-white font-medium mb-2">
+              <label
+                htmlFor="title"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Issue Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                {...register("title", {
+                  required: "Title is required",
+                  minLength: {
+                    value: 5,
+                    message: "Title must be at least 5 characters",
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: "Title must be less than 100 characters",
+                  },
+                })}
+                placeholder="e.g., Broken street light on Main Street"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition ${
+                  errors.title ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.title.message}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Description *
+              </label>
+              <textarea
+                id="description"
+                {...register("description", {
+                  required: "Description is required",
+                  minLength: {
+                    value: 20,
+                    message: "Description must be at least 20 characters",
+                  },
+                  maxLength: {
+                    value: 1000,
+                    message: "Description must be less than 1000 characters",
+                  },
+                })}
+                placeholder="Provide detailed information about the issue..."
+                rows="5"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none ${
+                  errors.description ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              <div className="flex justify-between items-center mt-1">
+                {errors.description ? (
+                  <p className="text-red-500 text-sm">
+                    {errors.description.message}
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    {description?.length || 0} characters
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Category Dropdown */}
+            <div>
+              <label
+                htmlFor="category"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Category *
               </label>
               <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-xl bg-white/20 border border-orange-500 text-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+                id="category"
+                {...register("category", {
+                  required: "Please select a category",
+                })}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition appearance-none bg-white ${
+                  errors.category ? "border-red-500" : "border-gray-300"
+                }`}
               >
-                <option value="" className="text-gray-700">
-                  Select category
-                </option>
+                <option value="">Select a category</option>
                 {categories.map((cat) => (
-                  <option key={cat} value={cat} className="text-gray-800">
+                  <option key={cat} value={cat}>
                     {cat}
                   </option>
                 ))}
               </select>
+              {errors.category && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.category.message}
+                </p>
+              )}
             </div>
 
-            {/* Priority */}
+            {/* Location */}
             <div>
-              <label className="block text-white font-medium mb-2">
-                Priority Level
-              </label>
-              <select
-                name="priority"
-                value={formData.priority}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl bg-white/20 border border-orange-500 text-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+              <label
+                htmlFor="location"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High (Urgent)</option>
-              </select>
+                Location *
+              </label>
+              <div className="relative">
+                <MapPin
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="text"
+                  id="location"
+                  {...register("location", {
+                    required: "Location is required",
+                    minLength: {
+                      value: 5,
+                      message: "Location must be at least 5 characters",
+                    },
+                  })}
+                  placeholder="e.g., 123 Main Street, Downtown"
+                  className={`w-full pl-11 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition ${
+                    errors.location ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+              </div>
+              {errors.location && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.location.message}
+                </p>
+              )}
             </div>
-          </div>
 
-          {/* Location */}
-          <div className="mb-6">
-            <label className="block text-white font-medium mb-2">
-              Location *
-            </label>
-            <div className="flex gap-3">
-              <input
-                type="text"
-                value={formData.address}
-                onChange={(e) =>
-                  setFormData({ ...formData, address: e.target.value })
-                }
-                placeholder="Enter address or use current location"
-                className="flex-1 px-4 py-3 rounded-xl bg-white/20 border border-orange-500 text-white placeholder-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Upload Image (Optional)
+              </label>
+
+              {!imagePreview ? (
+                <label
+                  htmlFor="image-upload"
+                  className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-primary transition"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                    <p className="mb-2 text-sm text-gray-600">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, JPEG (MAX. 5MB)
+                    </p>
+                  </div>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
+              ) : (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
                 type="button"
-                onClick={getCurrentLocation}
-                disabled={isGettingLocation}
-                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-medium flex items-center gap-2 transition"
+                onClick={handleSubmit(onSubmit)}
+                disabled={isSubmitting}
+                className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
               >
-                {isGettingLocation ? (
-                  <Loader2 className="animate-spin" size={20} />
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Submitting...
+                  </span>
                 ) : (
-                  <MapPin size={20} />
+                  "Submit Issue"
                 )}
-                {isGettingLocation ? "Getting..." : "Use My Location"}
               </button>
             </div>
-            {(formData.lat || formData.lng) && (
-              <p className="text-orange-200 text-sm mt-2">
-                Lat: {formData.lat}, Lng: {formData.lng}
-              </p>
-            )}
           </div>
 
-          {/* Photo Upload */}
-          <div className="mb-8">
-            <label className="block text-white font-medium mb-3">
-              Photos (Max 5) *
-            </label>
-            <label className="block">
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="hidden"
-                id="photo-upload"
-              />
-              <div className="border-2 border-dashed border-orange-500 rounded-xl p-8 text-center cursor-pointer hover:bg-white/5 transition">
-                <Upload className="mx-auto mb-3 text-orange-400" size={40} />
-                <p className="text-white">Click to upload photos</p>
-                <p className="text-orange-300 text-sm mt-1">Up to 5 images</p>
-              </div>
-            </label>
-
-            {/* Photo Previews */}
-            {photos.length > 0 && (
-              <div className="grid grid-cols-3 md:grid-cols-5 gap-4 mt-6">
-                {photos.map((photo, index) => (
-                  <div key={index} className="relative group">
-                    <img
-                      src={photo.preview}
-                      alt={`Preview ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg border-2 border-orange-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+          {/* Info Footer */}
+          <div className="mt-6 text-center text-sm text-gray-500">
+            <p>* Required fields</p>
           </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-4 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-800 text-white font-bold text-lg rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-300 flex items-center justify-center gap-3"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="animate-spin" size={24} />
-                Submitting Report...
-              </>
-            ) : (
-              "Submit Report"
-            )}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

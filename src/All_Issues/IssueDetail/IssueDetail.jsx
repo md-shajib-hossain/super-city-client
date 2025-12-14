@@ -109,12 +109,12 @@ const IssueDetail = () => {
             {/* Reporter Info */}
             <div className="flex items-center gap-4 mb-8 pb-8 border-b border-gray-200">
               <img
-                src={issueDetail?.avatar}
-                alt="Tanzila Rahman"
+                src={issueDetail?.createdBy?.avatar}
+                alt={issueDetail?.createdBy?.name}
                 className="w-16 h-16 rounded-full ring-4 ring-orange-200"
               />
               <div>
-                <p className="font-semibold text-gray-800">Reported by</p>
+                <p className="font-semibold text-gray-800">Reported by_</p>
                 <p className="text-lg font-bold text-blue-700">
                   {issueDetail?.createdBy?.name}
                 </p>
