@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "my-issues",
+        path: "my-issues/:email",
         Component: MyIssues,
       },
       {

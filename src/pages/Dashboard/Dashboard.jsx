@@ -6,9 +6,11 @@ import { TbFileReport } from "react-icons/tb";
 
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "../../components/Logo";
+import useAuth from "../../MyHooks/useAuth";
 const Dashboard = () => {
   const location = useLocation();
-  console.log(location, "location from dashboard");
+  const { user } = useAuth();
+  // console.log(location, "location from dashboard");
   return (
     <>
       <div className="drawer  lg:drawer-open">
@@ -74,7 +76,7 @@ const Dashboard = () => {
                 <NavLink
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="My Issues"
-                  to="/dashboard/my-issues"
+                  to={`/dashboard/my-issues/${user?.email}`}
                 >
                   <GoIssueOpened size={20} />
                   <span className="is-drawer-close:hidden">My Issues </span>

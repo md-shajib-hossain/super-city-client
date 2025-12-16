@@ -1,369 +1,304 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Upload, MapPin, X } from "lucide-react";
+import { useNavigate } from "react-router";
+import {
+  FaHeading,
+  FaRegFileAlt,
+  FaMapMarkerAlt,
+  FaImage,
+  FaCrown,
+  FaCloudUploadAlt,
+} from "react-icons/fa";
+import toast from "react-hot-toast";
+import useAuth from "../../MyHooks/useAuth";
+import { imageUpload } from "../../utils/custom";
 import useAxiosSecure from "../../AxiosSecure/useAxiosSecure";
-import { toast } from "react-hot-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Loader from "../../components/Loader";
+import Error from "../../pages/Error/ErrorPage";
 
-const ReportIssue = () => {
+export default function ReportIssue() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [imagePreview, setImagePreview] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  //image preview system in form
+  const [preview, setPreview] = useState(null);
+  // react-hook-form
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-    setValue,
-    watch,
-  } = useForm({
-    defaultValues: {
-      title: "",
-      description: "",
-      category: "",
-      location: "",
-      image: null,
+    formState: { errors },
+  } = useForm();
+  // useQuery for fetching user data from db
+  const { data: userData = [], isLoading: userDataLoading } = useQuery({
+    queryKey: ["userData", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure(`/users?email=${user?.email}`);
+      return res.data;
     },
   });
-
-  const categories = [
-    "Road Damage",
-    "Street Light",
-    "Drainage",
-    "Waste Management",
-    "Encroachment",
-    "Road Safety",
-    "Road Blockage",
-    "Traffic Safety",
-    "Park Maintenance",
-    "Water Supply",
-    "Animal Control",
-    "Public Facility",
-    "Traffic Signal",
-  ];
-
-  const description = watch("description");
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Validate file size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size should be less than 5MB");
-        return;
-      }
-
-      // Validate file type
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please upload an image file");
-        return;
-      }
-
-      setValue("image", file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = () => {
-    setValue("image", null);
-    setImagePreview(null);
-  };
-
+  console.log(user);
+  // useMutation hook for post data in db
+  const {
+    isPending,
+    isError,
+    mutateAsync,
+    reset: mutationReset,
+  } = useMutation({
+    mutationFn: async (payload) =>
+      await axiosSecure.post("/all-issues/create-new-issue", payload),
+    onSuccess: (data) => {
+      console.log(data);
+      // show toast
+      toast.success("Issue Reported successfully");
+      // navigate to my inventory page
+      mutationReset();
+      // Query key invalidate
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    onMutate: (payload) => {
+      console.log("I will post this data--->", payload);
+    },
+    onSettled: (data, error) => {
+      console.log("I am from onSettled--->", data);
+      if (error) console.log(error);
+    },
+    retry: 3,
+  });
+  // check free users limit
+  const isPremium = userData[0]?.isPremium;
+  const totalIssues = userData[0]?.totalIssues;
+  const maxFreeIssues = userData[0]?.maxFreeIssues;
+  const isLimitReached = !isPremium && totalIssues >= maxFreeIssues;
   const onSubmit = async (data) => {
-    setIsSubmitting(true);
-
+    if (isLimitReached) return;
+    const { title, description, category, image, location } = data;
+    const imageFile = image[0];
     try {
-      // Create FormData for file upload
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("location", data.location);
-
-      if (data.image) {
-        formData.append("image", data.image);
-      }
-
-      // Submit to backend
-      const response = await axiosSecure.post(
-        "/all-issues/create-new-issue",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Response:", response.data);
-
-      toast.success("Issue submitted successfully! ✅");
-
-      // Reset form
+      // upload image for hosting using img bb
+      const imageURL = await imageUpload(imageFile);
+      // ===== DUMMY DB SAVE =====
+      const issueData = {
+        title,
+        description,
+        category,
+        photos: [imageURL],
+        location: { address: location },
+        createdBy: {
+          name: user.displayName,
+          creatorEmail: user.email,
+          avatar: user.photoURL || "user image",
+        },
+        assignedStaff: "",
+        status: "Pending",
+        isBoosted: false,
+        createdAt: new Date(),
+      };
+      await mutateAsync(issueData);
+      // reset form & redirect
       reset();
-      setImagePreview(null);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error(error.response?.data?.message || "Failed to submit issue");
-    } finally {
-      setIsSubmitting(false);
+      setPreview(null);
+      navigate("/dashboard/my-issues");
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.message);
     }
   };
-
+  if (isPending || userDataLoading) return <Loader />;
+  if (isError) return <Error />;
   return (
-    <div className="min-h-screen bg-gray-100  py-12 px-4">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-md shadow-gray-500 hover:shadow-xl hover:shadow-primary transition ease-in-out duration-300 p-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Report an <span className="text-primary">Issue</span>
-            </h1>
-            <p className="text-gray-600">
-              Help us improve our community by reporting local issues
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Header */}
+      <div className="max-w-5xl mx-auto text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
+          Report an Issue
+        </h1>
+        <p className="text-lg text-gray-600">
+          Submit a civic issue for authority action & tracking
+        </p>
+      </div>
+
+      {/* LIMIT WARNING */}
+      {isLimitReached && (
+        <div className="max-w-5xl mx-auto mb-8">
+          <div className="bg-amber-50 border border-amber-300 rounded-0 p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-amber-800 font-medium">
+              You have reached the free issue limit (3 issues).
             </p>
+            <button
+              onClick={() => navigate("/dashboard/profile")}
+              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-0 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <FaCrown className="text-xl" />
+              Upgrade to Premium
+            </button>
           </div>
+        </div>
+      )}
 
-          <div className="space-y-6">
-            {/* Title */}
-            <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Issue Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                {...register("title", {
-                  required: "Title is required",
-                  minLength: {
-                    value: 5,
-                    message: "Title must be at least 5 characters",
-                  },
-                  maxLength: {
-                    value: 100,
-                    message: "Title must be less than 100 characters",
-                  },
-                })}
-                placeholder="e.g., Broken street light on Main Street"
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition ${
-                  errors.title ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.title && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
+      {/* Form Card */}
+      <div className="max-w-5xl mx-auto">
+        <div
+          className={`bg-white rounded-0 shadow-2xl p-8 lg:p-12 ${
+            isLimitReached ? "opacity-50 pointer-events-none" : ""
+          }`}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Title */}
+              <div className="space-y-2">
+                <label className="flex items-center gap-3 text-gray-700 font-semibold text-lg">
+                  <FaHeading className="text-primary text-xl" />
+                  Issue Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g., Street light not working"
+                  {...register("title", { required: "Title is required" })}
+                  className="w-full px-5 py-4 border border-gray-300 rounded-0 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition"
+                />
+                {errors.title && (
+                  <p className="text-red-500 text-sm">{errors.title.message}</p>
+                )}
+              </div>
 
-            {/* Description */}
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Description *
-              </label>
-              <textarea
-                id="description"
-                {...register("description", {
-                  required: "Description is required",
-                  minLength: {
-                    value: 20,
-                    message: "Description must be at least 20 characters",
-                  },
-                  maxLength: {
-                    value: 1000,
-                    message: "Description must be less than 1000 characters",
-                  },
-                })}
-                placeholder="Provide detailed information about the issue..."
-                rows="5"
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none ${
-                  errors.description ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              <div className="flex justify-between items-center mt-1">
-                {errors.description ? (
+              {/* Category */}
+              <div className="space-y-2">
+                <label className="block text-gray-700 font-semibold text-lg">
+                  Category
+                </label>
+                <select
+                  {...register("category", {
+                    required: "Category is required",
+                  })}
+                  className="w-full px-5 py-4 border border-gray-300 rounded-0 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition"
+                >
+                  <option value="">Select category</option>
+                  <option value="Road Damage">Road Damage</option>
+                  <option value="Street Light">Street Light</option>
+                  <option value="Drainage">Drainage</option>
+                  <option value="Waste Management">Waste Management</option>
+                  <option value="Encroachment">Encroachment</option>
+                  <option value="Road Safety">Road Safety</option>
+                  <option value="Road Blockage">Road Blockage</option>
+                  <option value="Traffic Safety">Traffic Safety</option>
+                  <option value="Park Maintenance">Park Maintenance</option>
+                  <option value="Water Supply">Water Supply</option>
+                  <option value="Animal Control">Animal Control</option>
+                  <option value="Public Facility">Public Facility</option>
+                  <option value="Traffic Signal">Traffic Signal</option>
+                </select>
+                {errors.category && (
+                  <p className="text-red-500 text-sm">
+                    {errors.category.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Description – full width */}
+              <div className="md:col-span-2 space-y-2">
+                <label className="flex items-center gap-3 text-gray-700 font-semibold text-lg">
+                  <FaRegFileAlt className="text-primary text-xl" />
+                  Description
+                </label>
+                <textarea
+                  rows="5"
+                  placeholder="Describe the issue in detail..."
+                  {...register("description", {
+                    required: "Description is required",
+                  })}
+                  className="w-full px-5 py-4 border border-gray-300 rounded-0 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition resize-none"
+                />
+                {errors.description && (
                   <p className="text-red-500 text-sm">
                     {errors.description.message}
                   </p>
-                ) : (
-                  <p className="text-sm text-gray-500">
-                    {description?.length || 0} characters
+                )}
+              </div>
+
+              {/* Upload Image */}
+              <div className="space-y-4">
+                <label className="flex items-center gap-3 text-gray-700 font-semibold text-lg">
+                  <FaImage className="text-primary text-xl" />
+                  Upload Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  {...register("image", {
+                    required: "Image is required",
+                    onChange: (e) => {
+                      const file = e.target.files[0];
+                      if (file) setPreview(URL.createObjectURL(file));
+                    },
+                  })}
+                  id="issue-image"
+                  className="hidden"
+                />
+                <label
+                  htmlFor="issue-image"
+                  className="flex items-center justify-center gap-3 px-6 py-12 border-2 border-dashed border-gray-400 rounded-0 cursor-pointer hover:border-primary hover:bg-primary/5 transition"
+                >
+                  <FaCloudUploadAlt className="text-4xl text-gray-500" />
+                  <div className="text-center">
+                    <p className="font-medium text-gray-700">Click to upload</p>
+                    <p className="text-sm text-gray-500">or drag and drop</p>
+                  </div>
+                </label>
+
+                {preview && (
+                  <div className="mt-4">
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="w-full max-w-md h-64 object-cover rounded-0 shadow-lg"
+                    />
+                  </div>
+                )}
+
+                {errors.image && (
+                  <p className="text-red-500 text-sm">{errors.image.message}</p>
+                )}
+              </div>
+
+              {/* Location */}
+              <div className="space-y-2">
+                <label className="flex items-center gap-3 text-gray-700 font-semibold text-lg">
+                  <FaMapMarkerAlt className="text-primary text-xl" />
+                  Location
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g., Area / Street name"
+                  {...register("location", {
+                    required: "Location is required",
+                  })}
+                  className="w-full px-5 py-4 border border-gray-300 rounded-0 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition"
+                />
+                {errors.location && (
+                  <p className="text-red-500 text-sm">
+                    {errors.location.message}
                   </p>
                 )}
               </div>
             </div>
 
-            {/* Category Dropdown */}
-            <div>
-              <label
-                htmlFor="category"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Category *
-              </label>
-              <select
-                id="category"
-                {...register("category", {
-                  required: "Please select a category",
-                })}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition appearance-none bg-white ${
-                  errors.category ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="">Select a category</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-              {errors.category && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.category.message}
-                </p>
-              )}
-            </div>
-
-            {/* Location */}
-            <div>
-              <label
-                htmlFor="location"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Location *
-              </label>
-              <div className="relative">
-                <MapPin
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  id="location"
-                  {...register("location", {
-                    required: "Location is required",
-                    minLength: {
-                      value: 5,
-                      message: "Location must be at least 5 characters",
-                    },
-                  })}
-                  placeholder="e.g., 123 Main Street, Downtown"
-                  className={`w-full pl-11 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition ${
-                    errors.location ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-              </div>
-              {errors.location && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.location.message}
-                </p>
-              )}
-            </div>
-
-            {/* Image Upload */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Upload Image (Optional)
-              </label>
-
-              {!imagePreview ? (
-                <label
-                  htmlFor="image-upload"
-                  className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary hover:bg-primary transition"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-12 h-12 text-gray-400 mb-3" />
-                    <p className="mb-2 text-sm text-gray-600">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      PNG, JPG, JPEG (MAX. 5MB)
-                    </p>
-                  </div>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
-              ) : (
-                <div className="relative">
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-4">
+            {/* Submit */}
+            <div className="mt-12 text-center">
               <button
-                type="button"
-                onClick={handleSubmit(onSubmit)}
-                disabled={isSubmitting}
-                className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-primary disabled:bg-gray-400 disabled:cursor-not-allowed transition transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                type="submit"
+                disabled={isPending}
+                className="px-12 py-4 bg-primary text-white font-bold text-lg rounded-0 shadow-lg hover:shadow-xl hover:bg-primary/90 transition transform hover:-translate-y-1 disabled:opacity-70"
               >
-                {isSubmitting ? (
-                  <span className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Submitting...
-                  </span>
-                ) : (
-                  "Submit Issue"
-                )}
+                {isPending ? "Submitting..." : "Submit Issue"}
               </button>
             </div>
-          </div>
-
-          {/* Info Footer */}
-          <div className="mt-6 text-center text-sm text-gray-500">
-            <p>* Required fields</p>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   );
-};
-
-export default ReportIssue;
+}
